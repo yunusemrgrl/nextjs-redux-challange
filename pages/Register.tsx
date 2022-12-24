@@ -16,6 +16,8 @@ import {passwordValidation, passwordCheckValidate} from "../validations/Password
 import {AnyAction, AsyncThunkAction} from "@reduxjs/toolkit";
 import {register} from "../services/auth";
 
+import backgroundSvg from "../public/backgroundImage.svg"
+
 interface User {
     name: string;
     password: string;
@@ -79,7 +81,10 @@ const Register: NextPage = () => {
     return (
         <main className="flex h-screen">
             <div
-                className=" opacity-1 hidden lg:grid  w-[1150px] w-full grid place-items-center">
+                style={{
+                    backgroundImage: `url("${backgroundSvg.src}")`,
+                }}
+                className="opacity-1 hidden lg:grid  w-[1150px] w-full grid place-items-center">
                 <LeftSideTitle title="PitonShop" description="The most popular book shop for IT"
                                style="text-white mb-60"/>
             </div>

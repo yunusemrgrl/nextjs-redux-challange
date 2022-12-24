@@ -13,6 +13,8 @@ import Button from "../components/Button";
 import RightSideTitle from "../components/RightSideTitle";
 import LeftSideTitle from "../components/LeftSideTitle";
 
+import backgroundSvg from "../public/backgroundImage.svg"
+
 
 interface User {
     password: string;
@@ -63,7 +65,10 @@ const Login: NextPage = () => {
     return (
         <main className="flex h-screen">
             <div
-                className="bg-gradient-to-b from-blue-600 to-second-color opacity-1 hidden lg:grid  w-[1150px] w-full grid place-items-center">
+                style={{
+                    backgroundImage: `url("${backgroundSvg.src}")`,
+                }}
+                className=" opacity-1 hidden lg:grid  w-[1150px] w-full grid place-items-center">
                 <LeftSideTitle title="PitonShop" description="The most popular book shop for IT"
                                style="text-white mb-60"/>
             </div>
