@@ -1,11 +1,11 @@
 import type {NextPage} from 'next'
 import type {RootState} from '../store'
 
-import React, {ChangeEventHandler, useRef, useState} from "react";
+import React, {ChangeEvent, ChangeEventHandler, SetStateAction, useEffect, useRef, useState} from "react";
 import {useSelector, useDispatch} from 'react-redux'
 
 import {AppDispatch} from "../store";
-import {getToken} from "../slices/registerSlice";
+import {login} from "../services/auth";
 
 
 import Input from "../components/Input";
@@ -15,22 +15,30 @@ import LeftSideTitle from "../components/LeftSideTitle";
 
 
 interface User {
-    name: string;
     password: string;
     email: string;
 }
 
+
 const Login: NextPage = () => {
 
-    const handleClick = () => {
+    const dispatch = useDispatch<AppDispatch>()
 
-    }
+    useEffect(() => {
+        const remember = localStorage.getItem("rememberMe");
+        if (remember) {
+            setIsRemember(JSON.parse(remember));
+        }
+    }, []);
+
 
     const [userData, setUserData] = React.useState<User>({
-        name: '',
-        password: '',
         email: '',
+        password: '',
     });
+
+
+    const [isRemember, setIsRemember] = useState<boolean>(false);
 
     const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
         setUserData({
@@ -38,6 +46,17 @@ const Login: NextPage = () => {
             [event.target.name]: event.target.value,
         });
         console.log(userData)
+    };
+
+    const handleLogin = () => {
+        console.log("login")
+        dispatch(login({userData}));
+    };
+
+
+    const checkboxRemember = (event: ChangeEvent<HTMLInputElement>) => {
+        setIsRemember(event.target.checked);
+        localStorage.setItem('rememberMe', JSON.stringify(event.target.checked));
     };
 
 
@@ -54,7 +73,7 @@ const Login: NextPage = () => {
                     <div className="grid gap-y-4 mt-12">
                         <Input
                             name="email"
-                            imageSrc="https://img.icons8.com/sf-regular-filled/40/null/lock.png"
+                            imageSrc="https://img.icons8.com/ios/36/null/new-post--v1.png"
                             type="email"
                             value={userData.email}
                             onChange={handleChange}
@@ -62,15 +81,15 @@ const Login: NextPage = () => {
                         />
                         <Input
                             name="password"
-                            imageSrc="https://img.icons8.com/ios/36/null/new-post--v1.png"
+                            imageSrc="https://img.icons8.com/sf-regular-filled/40/null/lock.png"
                             type="password"
                             value={userData.password}
                             onChange={handleChange}
                             placeholder="Password"
                         />
-                        <Button title="Login" onClick={handleClick}/>
+                        <Button title="Login" onClick={handleLogin}/>
                         <div className="flex justify-center">
-                            <input type="checkbox" className="valid" checked/>
+                            <input type="checkbox" className="valid" onChange={checkboxRemember} checked={isRemember}/>
                             <label
                                 className="py-2 px-2  outline-0 text-gray-600 text-lg font-semibold opacity-80">Remember
                                 me

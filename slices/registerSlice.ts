@@ -1,38 +1,27 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-
+import {login} from "../services/auth";
+import {register} from "../services/auth";
 
 export type TokenState = {
     accessToken: string;
     pending: boolean,
     error: boolean,
+    cookie: string
 };
+
+interface User {
+    name?: string;
+    password: string;
+    email: string;
+}
 
 const initialState: TokenState = {
     accessToken: "",
     pending: false,
     error: false,
+    cookie: "",
 };
 
-interface User {
-    name: string;
-    password: string;
-    email: string;
-}
-
-
-export const getToken = createAsyncThunk("Token/getToken", async (userData: User) => {
-    const response = await fetch(
-        "https://assignment-api.piton.com.tr/api/v1/user/register", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({name: "yunus", password: "123123", email: "test@test.com"})
-        }
-    );
-    return await response.json();
-});
 
 export const TokenSlice = createSlice({
     name: "accessToken",
@@ -40,17 +29,40 @@ export const TokenSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getToken.pending, (state) => {
+            .addCase(register.pending, (state) => {
+                console.log("pending")
                 state.pending = true;
             })
-            .addCase(getToken.fulfilled, (state, {payload}) => {
+            .addCase(register.fulfilled, (state, {payload}) => {
+                console.log(payload)
                 state.pending = false;
                 state.accessToken = payload;
+                console.log(payload.token)
+                state.cookie = `token=${payload.token}`;
+                document.cookie = state.cookie;
             })
-            .addCase(getToken.rejected, (state) => {
+            .addCase(register.rejected, (state) => {
+                console.log("rejected")
+                state.pending = false;
+                state.error = true;
+            }).addCase(login.pending, (state) => {
+            console.log("pending")
+            state.pending = true;
+        })
+            .addCase(login.fulfilled, (state, {payload}) => {
+                console.log(payload)
+                state.pending = false;
+                state.accessToken = payload;
+                state.cookie = `token=${payload}`;
+                document.cookie = state.cookie;
+            })
+            .addCase(login.rejected, (state) => {
+                console.log("rejected")
                 state.pending = false;
                 state.error = true;
             });
+        ;
+
     },
 });
 
