@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
 
 export type TokenState = {
@@ -13,32 +13,37 @@ const initialState: TokenState = {
     error: false,
 };
 
-export const getToken = createAsyncThunk("Token/getToken", async () => {
+interface User {
+    name: string;
+    password: string;
+    email: string;
+}
+
+
+export const getToken = createAsyncThunk("Token/getToken", async (userData: User) => {
     const response = await fetch(
-        "https://assignment-api.piton.com.tr/api/v1/user/register",{
+        "https://assignment-api.piton.com.tr/api/v1/user/register", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({name:"yunus", password: "123123", email: "test@test.com"})
+            body: JSON.stringify({name: "yunus", password: "123123", email: "test@test.com"})
         }
-
     );
     return await response.json();
 });
 
 export const TokenSlice = createSlice({
-    name:"accessToken",
+    name: "accessToken",
     initialState,
-    reducers: {
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(getToken.pending, (state) => {
                 state.pending = true;
             })
-            .addCase(getToken.fulfilled, (state, { payload }) => {
+            .addCase(getToken.fulfilled, (state, {payload}) => {
                 state.pending = false;
                 state.accessToken = payload;
             })
