@@ -2,7 +2,7 @@ import type {NextPage} from 'next'
 import {AppDispatch} from "../store";
 import React, {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
 
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {useRouter} from "next/router";
 
 
@@ -18,7 +18,7 @@ import {login} from "../services/auth";
 
 
 import backgroundSvg from "../public/backgroundImage.svg"
-import {authSelect, TokenSlice} from "../slices/authSlice";
+import {TokenSlice} from "../slices/authSlice";
 
 interface User {
     password: string;

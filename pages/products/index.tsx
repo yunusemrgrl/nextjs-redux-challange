@@ -8,7 +8,8 @@ import LoginHeader from "../../components/Header/LoginHeader";
 import ProductList from "../../components/Product/ProductList";
 
 import {getProducts} from "../../services/product";
-import {authSelect, productsSelect, TokenSlice} from "../../slices/authSlice";
+import {authSelect, TokenSlice} from "../../slices/authSlice";
+import {productsSelect} from "../../slices/productSlice";
 
 
 const Products: NextPage = () => {

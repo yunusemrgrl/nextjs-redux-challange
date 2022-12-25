@@ -97,65 +97,10 @@ export const TokenSlice = createSlice({
                 state.pending = false;
                 state.error = true;
             })
-
-            .addCase(getProducts.pending, (state) => {
-                state.pending = true;
-            })
-            .addCase(getProducts.fulfilled, (state, {payload}) => {
-                state.pending = false
-                state.error = false
-                state.products = payload.products;
-            })
-            .addCase(getProducts.rejected, (state) => {
-                state.pending = false;
-                state.error = true;
-            })
-
-            .addCase(getProductDetail.pending, (state) => {
-                state.pending = true;
-            })
-            .addCase(getProductDetail.fulfilled, (state, {payload}) => {
-                state.pending = false
-                state.error = false
-                state.product = payload.product;
-            })
-            .addCase(getProductDetail.rejected, (state) => {
-                state.pending = false;
-                state.error = true;
-            })
-
-            .addCase(likeBook.pending, (state) => {
-                state.pending = true;
-            })
-            .addCase(likeBook.fulfilled, (state, {payload}) => {
-                console.log(payload)
-                state.pending = false
-                state.error = false
-            })
-            .addCase(likeBook.rejected, (state) => {
-                state.pending = false;
-                state.error = true;
-            })
-
-            .addCase(unLikeBook.pending, (state) => {
-                state.pending = true;
-            })
-            .addCase(unLikeBook.fulfilled, (state, {payload}) => {
-                console.log(payload)
-                state.pending = false
-                state.error = false
-            })
-            .addCase(unLikeBook.rejected, (state) => {
-                state.pending = false;
-                state.error = true;
-            });
     },
 });
 
 export const authSelect = (state: RootState): string | null => state.accessToken.cookie;
-export const productsSelect = (state: RootState): [] => state.accessToken.products;
-export const getProductDetailSelect = (state: RootState): Product => state.accessToken.product;
-export const errorSelect = (state: RootState): boolean => state.accessToken.error;
 
 
 export default TokenSlice.reducer

@@ -3,7 +3,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {AppDispatch} from "../../store";
 
-import {authSelect, getProductDetailSelect, TokenSlice} from "../../slices/authSlice";
+import {authSelect, TokenSlice} from "../../slices/authSlice";
+import {getProductDetailSelect,} from "../../slices/productSlice";
+
 import {getProductDetail, likeBook, unLikeBook} from "../../services/product";
 
 import LoginHeader from "../../components/Header/LoginHeader";
