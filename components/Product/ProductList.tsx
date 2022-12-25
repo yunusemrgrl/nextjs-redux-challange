@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../store";
 import {authSelect, TokenSlice} from "../../slices/authSlice";
 
-import {likeBook, unLikeBook} from "../../services/auth";
+import {likeBook, unLikeBook} from "../../services/product";
 
 type Props = {
     product: {
