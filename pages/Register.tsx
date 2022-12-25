@@ -111,6 +111,7 @@ const Register: NextPage = () => {
                             value={formattedPhone}
                             onChange={handleChange}
                             placeholder="Phone"
+                            inputmode="numeric"
                         />
                         <Input
                             name="password"
