@@ -15,7 +15,7 @@ type InputComponentProps = {
 const InputComponent = (props: InputComponentProps) => {
     return (
         <div
-            className="flex md:w-[444px] w-[350px] md:h-24 h-16  bg-white rounded-full items-center border border-gray-400 ">
+            className="flex md:w-[444px] w-[355px] md:h-24 h-16  bg-white rounded-full items-center border border-gray-400 ">
             {props.imageSrc ? <img alt={props.name} className="opacity-40 ml-4 px-4" src={props.imageSrc}/> :
                 <div className="block w-[84px]">
 
