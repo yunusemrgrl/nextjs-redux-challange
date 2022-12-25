@@ -7,9 +7,8 @@ import {AppDispatch} from "../../store";
 import LoginHeader from "../../components/Header/LoginHeader";
 import ProductList from "../../components/Product/ProductList";
 
-import {getProducts} from "../../services/auth";
+import {getProducts} from "../../services/product";
 import {authSelect, productsSelect, TokenSlice} from "../../slices/authSlice";
-import {useRouter} from "next/router";
 
 
 const Products: NextPage = () => {

@@ -1,5 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getProducts, login, getProductDetail, register, likeBook, unLikeBook} from "../services/auth";
+import {login, register,} from "../services/auth";
+import {getProducts, getProductDetail, likeBook, unLikeBook} from "../services/product";
+
 import {RootState} from "../store";
 
 

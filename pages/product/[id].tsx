@@ -3,8 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {AppDispatch} from "../../store";
 
-import {authSelect, errorSelect, getProductDetailSelect, TokenSlice} from "../../slices/authSlice";
-import {getProductDetail, likeBook, unLikeBook} from "../../services/auth";
+import {authSelect, getProductDetailSelect, TokenSlice} from "../../slices/authSlice";
+import {getProductDetail, likeBook, unLikeBook} from "../../services/product";
 
 import LoginHeader from "../../components/Header/LoginHeader";
 import img from "../../public/imgThumb.png"
