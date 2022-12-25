@@ -1,6 +1,9 @@
 # Next.js + Tailwind CSS + Redux
 
+
 ## Kitap Katalog Uygulaması
+
+## [Canlı Site](https://nextjs-redux-challange-56ce.vercel.app/)
 
 - Redux
 - Tailwindcss
