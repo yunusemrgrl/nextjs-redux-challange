@@ -115,7 +115,7 @@ const Register: NextPage = () => {
                         <Input
                             name="password"
                             imageSrc="https://img.icons8.com/sf-regular-filled/40/null/lock.png"
-                            type="text"
+                            type="password"
                             value={userData.password}
                             onChange={handleChange}
                             placeholder="Password"
@@ -123,7 +123,7 @@ const Register: NextPage = () => {
                         <Input
                             name="passwordRepeat"
                             imageSrc="https://img.icons8.com/sf-regular-filled/40/null/lock.png"
-                            type="text"
+                            type="password"
                             value={userData.passwordRepeat}
                             onChange={handleChange}
                             placeholder="Repeat your password"
