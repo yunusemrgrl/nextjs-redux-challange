@@ -106,7 +106,7 @@ const Register: NextPage = () => {
                         />
                         <Input
                             name="phone"
-                            type="text"
+                            type="number"
                             imageSrc="https://img.icons8.com/ios-filled/36/null/phone.png"
                             value={formattedPhone}
                             onChange={handleChange}
@@ -115,8 +115,7 @@ const Register: NextPage = () => {
                         <Input
                             name="password"
                             imageSrc="https://img.icons8.com/sf-regular-filled/40/null/lock.png"
-                            type="password"
-                            inputmode="numeric"
+                            type="text"
                             value={userData.password}
                             onChange={handleChange}
                             placeholder="Password"
@@ -124,7 +123,7 @@ const Register: NextPage = () => {
                         <Input
                             name="passwordRepeat"
                             imageSrc="https://img.icons8.com/sf-regular-filled/40/null/lock.png"
-                            type="password"
+                            type="text"
                             value={userData.passwordRepeat}
                             onChange={handleChange}
                             placeholder="Repeat your password"

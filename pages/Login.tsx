@@ -107,7 +107,7 @@ const Login: NextPage = () => {
                         <Input
                             name="password"
                             imageSrc="https://img.icons8.com/sf-regular-filled/40/null/lock.png"
-                            type="password"
+                            type="text"
                             value={userData.password}
                             onChange={handleChange}
                             placeholder="Password"
