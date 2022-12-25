@@ -1,11 +1,9 @@
 import type {NextPage} from 'next'
-import type {RootState} from '../store'
-
-import React, {ChangeEvent, ChangeEventHandler, SetStateAction, useEffect, useRef, useState} from "react";
-import {useSelector, useDispatch} from 'react-redux'
-
 import {AppDispatch} from "../store";
-import {login} from "../services/auth";
+import React, {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
+
+import {useDispatch} from 'react-redux'
+import {useRouter} from "next/router";
 
 
 import Input from "../components/Input";
@@ -13,8 +11,12 @@ import Button from "../components/Button";
 import RightSideTitle from "../components/RightSideTitle";
 import LeftSideTitle from "../components/LeftSideTitle";
 
-import backgroundSvg from "../public/backgroundImage.svg"
+import {passwordValidation} from "../validations/PasswordValidation";
 
+import {login} from "../services/auth";
+
+
+import backgroundSvg from "../public/backgroundImage.svg"
 
 interface User {
     password: string;
@@ -24,6 +26,7 @@ interface User {
 
 const Login: NextPage = () => {
 
+    const router = useRouter();
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
@@ -47,12 +50,25 @@ const Login: NextPage = () => {
             ...userData,
             [event.target.name]: event.target.value,
         });
-        console.log(userData)
     };
 
     const handleLogin = () => {
-        console.log("login")
-        dispatch(login({userData}));
+        Promise.all([
+            passwordValidation(userData.password),
+        ]).then(results => {
+            results.forEach(result => {
+                if (result.status === "danger") {
+                    return alert(result.message);
+                }
+            });
+            const isSuccess = results.every(result => result.status === "success");
+            if (isSuccess) {
+                dispatch(login({userData})).then((res) => {
+                    if (res.payload.token === "") return
+                    router.push("/products")
+                });
+            }
+        });
     };
 
 

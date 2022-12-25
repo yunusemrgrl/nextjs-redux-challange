@@ -1,19 +1,14 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {login} from "../services/auth";
 import {register} from "../services/auth";
+import {RootState} from "../store";
 
 export type TokenState = {
     accessToken: string;
     pending: boolean,
     error: boolean,
-    cookie: string
+    cookie: string | null
 };
-
-interface User {
-    name?: string;
-    password: string;
-    email: string;
-}
 
 const initialState: TokenState = {
     accessToken: "",
@@ -26,45 +21,59 @@ const initialState: TokenState = {
 export const TokenSlice = createSlice({
     name: "accessToken",
     initialState,
-    reducers: {},
+    reducers: {
+        checkCookie: (state) => {
+            const cookie = document.cookie.split(";").find((c) => c.trim().startsWith("token="));
+            if (cookie) {
+                const token = cookie.split("=")[1];
+                state.cookie = token;
+            } else {
+                state.cookie = null;
+            }
+        },
+    },
+
     extraReducers: (builder) => {
         builder
             .addCase(register.pending, (state) => {
-                console.log("pending")
                 state.pending = true;
             })
             .addCase(register.fulfilled, (state, {payload}) => {
-                console.log(payload)
                 state.pending = false;
                 state.accessToken = payload;
-                console.log(payload.token)
                 state.cookie = `token=${payload.token}`;
                 document.cookie = state.cookie;
             })
             .addCase(register.rejected, (state) => {
-                console.log("rejected")
                 state.pending = false;
                 state.error = true;
-            }).addCase(login.pending, (state) => {
-            console.log("pending")
-            state.pending = true;
-        })
+            })
+            .addCase(login.pending, (state) => {
+                state.pending = true;
+            })
             .addCase(login.fulfilled, (state, {payload}) => {
-                console.log(payload)
                 state.pending = false;
-                state.accessToken = payload;
-                state.cookie = `token=${payload}`;
-                document.cookie = state.cookie;
+                console.log(payload)
+                if (payload.token === "") {
+                    state.error = true
+                } else {
+                    state.error = false
+                    state.accessToken = payload;
+                    document.cookie = payload.token;
+                    state.cookie = `token=${payload.token}`;
+                }
+
+                console.log(state.error)
+
             })
             .addCase(login.rejected, (state) => {
-                console.log("rejected")
                 state.pending = false;
                 state.error = true;
             });
-        ;
-
     },
 });
+
+export const authSelect = (state: RootState): string | null => state.accessToken.cookie;
 
 
 export default TokenSlice.reducer
