@@ -1,20 +1,19 @@
 import type {NextPage} from 'next'
-import type {RootState} from '../store'
 
-import React, {ChangeEventHandler, SetStateAction, useEffect, useRef, useState} from "react";
-import {useSelector, useDispatch} from 'react-redux'
+import React, {ChangeEventHandler} from "react";
+import {useDispatch} from 'react-redux'
 
 import {AppDispatch} from "../store";
-
+import {register} from "../services/auth";
 
 import Input from "../components/Input";
 import Button from "../components/Button";
 import RightSideTitle from "../components/RightSideTitle";
 import LeftSideTitle from "../components/LeftSideTitle";
+
 import {maskPhoneNumber, phoneValidate} from "../validations/phoneValidation";
 import {passwordValidation, passwordCheckValidate} from "../validations/PasswordValidation";
-import {AnyAction, AsyncThunkAction} from "@reduxjs/toolkit";
-import {register} from "../services/auth";
+import {emailValidation,} from "../validations/EmailValidation";
 
 import backgroundSvg from "../public/backgroundImage.svg"
 
@@ -59,7 +58,8 @@ const Register: NextPage = () => {
         Promise.all([
             phoneValidate(userData.phone),
             passwordValidation(userData.password),
-            passwordCheckValidate(userData.password, userData.passwordRepeat)
+            passwordCheckValidate(userData.password, userData.passwordRepeat),
+            emailValidation(userData.email)
         ]).then(results => {
             results.forEach(result => {
                 if (result.status === "danger") {
@@ -73,10 +73,6 @@ const Register: NextPage = () => {
         });
     };
 
-
-    useEffect(() => {
-        console.log(userData)
-    }, [userData])
 
     return (
         <main className="flex h-screen">

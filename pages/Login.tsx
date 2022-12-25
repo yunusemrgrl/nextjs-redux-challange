@@ -2,7 +2,7 @@ import type {NextPage} from 'next'
 import {AppDispatch} from "../store";
 import React, {ChangeEvent, ChangeEventHandler, useEffect, useState} from "react";
 
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {useRouter} from "next/router";
 
 
@@ -11,12 +11,14 @@ import Button from "../components/Button";
 import RightSideTitle from "../components/RightSideTitle";
 import LeftSideTitle from "../components/LeftSideTitle";
 
-import {passwordValidation} from "../validations/PasswordValidation";
+import {passwordValidation,} from "../validations/PasswordValidation";
+import {emailValidation,} from "../validations/EmailValidation";
 
 import {login} from "../services/auth";
 
 
 import backgroundSvg from "../public/backgroundImage.svg"
+import {authSelect, TokenSlice} from "../slices/authSlice";
 
 interface User {
     password: string;
@@ -26,15 +28,8 @@ interface User {
 
 const Login: NextPage = () => {
 
-    const router = useRouter();
     const dispatch = useDispatch<AppDispatch>()
-
-    useEffect(() => {
-        const remember = localStorage.getItem("rememberMe");
-        if (remember) {
-            setIsRemember(JSON.parse(remember));
-        }
-    }, []);
+    const router = useRouter();
 
 
     const [userData, setUserData] = React.useState<User>({
@@ -42,8 +37,16 @@ const Login: NextPage = () => {
         password: '',
     });
 
-
     const [isRemember, setIsRemember] = useState<boolean>(false);
+
+    useEffect(() => {
+        const remember = localStorage.getItem("rememberMe");
+        dispatch(TokenSlice.actions.checkCookie());
+        if (remember) {
+            setIsRemember(JSON.parse(remember));
+        }
+    }, []);
+
 
     const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
         setUserData({
@@ -55,6 +58,7 @@ const Login: NextPage = () => {
     const handleLogin = () => {
         Promise.all([
             passwordValidation(userData.password),
+            emailValidation(userData.email)
         ]).then(results => {
             results.forEach(result => {
                 if (result.status === "danger") {
