@@ -32,11 +32,10 @@ Validasyonlar:
 - `access-token` ile `remember-me` değerine sahip kullanıcılar doğrudan `router.push` ile `/products` sayfasına
   yönlendirilirler.
 
-![figma-tasarim]("https://github.com/yunusemrgrl/nextjs-redux-challange/blob/main/public/readme-ss/figma_bg.png") <br><br>
+<img src="public/readme-ss/figma_bg.png" alt="figma-tasarim" width="600" height="300"><br><br>
 Figma üzerinden gradient geçişi ve ellips ile gerekli tasarım yapılmıştır.
 <br><br>
-![uygulama-arayuzu]("https://github.com/yunusemrgrl/nextjs-redux-challange/blob/main/public/readme-ss/projectReview.gif")
-
+![uygulama-arayuzu](public/readme-ss/projectReview.gif) <br><br>
 ## Nasıl Kullanılır
 
 Bu repoyu indirip aşağıdaki komutları kullanarak kendi localinizde kurabilirsiniz. İsterseniz repo açıklaması
