@@ -4,28 +4,18 @@ import {getProducts, getProductDetail, likeBook, unLikeBook} from "../services/p
 import {RootState} from "../store";
 
 
-type Product = {
-    id: number,
-    name: string,
-    image: string,
-    price: number,
-    description: string,
-    likes: [],
-    timeStamp: string
+export interface Product {
+    id: number;
+    name: string;
+    image: string;
+    price: number;
+    timeStamp: string;
+    description: string;
+    likes: number[];
 }
 
 
-export type TokenState = {
-    products: []
-    accessToken: string;
-    pending: boolean,
-    error: boolean,
-    cookie: string | null
-    product: Product
-    like: []
-};
-
-const initialState: TokenState = {
+const initialState = {
     pending: false,
     error: false,
     products: [],
@@ -38,8 +28,6 @@ const initialState: TokenState = {
         description: "",
         likes: []
     },
-    like: []
-
 };
 
 
@@ -103,7 +91,7 @@ export const PsroductSlice = createSlice({
     },
 });
 
-export const productsSelect = (state: RootState): [] => state.product.products;
+export const productsSelect = (state: RootState): Product[] => state.product.products;
 export const getProductDetailSelect = (state: RootState): Product => state.product.product;
 
 

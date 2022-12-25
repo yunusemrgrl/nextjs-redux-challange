@@ -18,7 +18,8 @@ const Product: NextPage = () => {
     const dispatch = useDispatch<AppDispatch>()
     const accessToken = useSelector(authSelect);
     const product = useSelector(getProductDetailSelect);
-    const [likedProduct, setLikedProduct] = useState([])
+    
+    const [likedProduct, setLikedProduct] = useState<number[]>([]);
 
     useEffect(() => {
         setLikedProduct(JSON.parse(localStorage.getItem("likes") || "[]"))

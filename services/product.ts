@@ -41,7 +41,7 @@ export const likeBook = createAsyncThunk("Token/likeBook", async (param: { acces
         {
             method: "POST",
             headers: {
-                "access-token": param.accessToken,
+                "access-token": param.accessToken || "",
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
@@ -57,7 +57,7 @@ export const unLikeBook = createAsyncThunk("Token/unLikeBook", async (param: { a
         {
             method: "POST",
             headers: {
-                "access-token": param.accessToken,
+                "access-token": param.accessToken || "",
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
