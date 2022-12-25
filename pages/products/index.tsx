@@ -1,26 +1,48 @@
 import type {NextPage} from 'next'
-import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
+
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../../store";
+
 import LoginHeader from "../../components/Header/LoginHeader";
 import ProductList from "../../components/Product/ProductList";
 
+import {getProducts} from "../../services/auth";
+import {authSelect, productsSelect, TokenSlice} from "../../slices/authSlice";
+import {useRouter} from "next/router";
+
+
 const Products: NextPage = () => {
 
-    const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>()
 
-    const onclick = () => {
-        router.push("/products")
-    }
+    const accessToken = useSelector(authSelect);
+    const products = useSelector(productsSelect);
 
-    return (<div className="h-screen flex flex-col">
+
+    useEffect(() => {
+        dispatch(TokenSlice.actions.checkCookie());
+        if (accessToken) {
+            dispatch(getProducts({accessToken,}));
+        }
+
+
+    }, [accessToken])
+
+
+    return (
+        <div className="h-screen flex flex-col">
             <LoginHeader/>
-            <main className="flex px-4 pb-20  pt-16 justify-center">
+            <main className="flex px-12 pb-20  pt-16 justify-center">
                 <section
                     className="grid gap-8  flex-shrink  lg:gap-16 md:gap-8  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    <ProductList/>
+                    {products && products.length > 0 && (
+                        products.map((product, index) => {
+                            return <ProductList key={index} product={product}/>
+                        })
+                    )}
                 </section>
-
             </main>
-
         </div>
     )
 }
