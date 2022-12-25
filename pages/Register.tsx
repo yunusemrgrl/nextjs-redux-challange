@@ -106,12 +106,11 @@ const Register: NextPage = () => {
                         />
                         <Input
                             name="phone"
-                            type="number"
+                            type="tel"
                             imageSrc="https://img.icons8.com/ios-filled/36/null/phone.png"
                             value={formattedPhone}
                             onChange={handleChange}
                             placeholder="Phone"
-                            inputmode="numeric"
                         />
                         <Input
                             name="password"
