@@ -27,7 +27,7 @@ const initialState = {
         description: "",
         likes: []
     },
-    likedProducts: []
+    likedProducts: [1,2]
 };
 
 
