@@ -6,6 +6,7 @@ import {AppDispatch} from "../../store";
 import {authSelect, TokenSlice} from "../../slices/authSlice";
 
 import {likeBook, unLikeBook} from "../../services/product";
+import {likedProducts} from "../../slices/productSlice";
 
 type Props = {
     product: {
@@ -21,14 +22,9 @@ const ProductList: NextPage<Props> = ({product}) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>()
     const accessToken = useSelector(authSelect);
+    const likedProductsArr = useSelector(likedProducts);
 
     const [imageSrc, setImageSrc] = useState("https://img.icons8.com/ios/36/000000/hearts--v1.png");
-    const [likedProduct, setLikedProduct] = useState(JSON.parse(localStorage.getItem("likes") || "[]"))
-
-
-    useEffect(() => {
-        setLikedProduct(JSON.parse(localStorage.getItem("likes") || "[]"))
-    }, [])
 
     useEffect(() => {
         dispatch(TokenSlice.actions.checkCookie());
@@ -39,19 +35,13 @@ const ProductList: NextPage<Props> = ({product}) => {
         router.push("/product/" + product.id)
     }
 
-    const likeBookEvent = () => {
-        const likedProductIds = JSON.parse(localStorage.getItem("likes") || "[]");
-        if (likedProductIds.includes(product.id)) {
-            dispatch(unLikeBook({accessToken, productId: product.id}));
-            const updatedLikedProductIds = likedProductIds.filter((id: number) => id !== product.id);
-            setLikedProduct(updatedLikedProductIds);
-            localStorage.setItem("likes", JSON.stringify(updatedLikedProductIds));
+    const likeBookEvent = async () => {
+        if (likedProductsArr.includes(product.id)) {
+            await dispatch(unLikeBook({accessToken, productId: product.id}));
         } else {
-            dispatch(likeBook({accessToken, productId: product.id}));
-            likedProductIds.push(product.id);
-            setLikedProduct(likedProductIds);
-            localStorage.setItem("likes", JSON.stringify(likedProductIds));
+            await dispatch(likeBook({accessToken, productId: product.id}));
         }
+        localStorage.setItem("likes", JSON.stringify(likedProductsArr));
     }
 
 
@@ -60,7 +50,7 @@ const ProductList: NextPage<Props> = ({product}) => {
             className="flex h-max flex-col bg-white border-2 border-gray-400 border-opacity-40 hover:cursor-pointer rounded-3xl p-4"
         >
             <div className="flex  justify-end mb-2">
-                {!likedProduct.includes(product.id) ?
+                {!likedProductsArr.includes(product.id) ?
                     <img
                         onMouseOver={() => setImageSrc("https://img.icons8.com/color/36/null/filled-like.png")}
                         onMouseOut={() => setImageSrc("https://img.icons8.com/ios/36/000000/hearts--v1.png")}

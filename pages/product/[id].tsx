@@ -4,8 +4,7 @@ import {useEffect, useState} from "react";
 import {AppDispatch} from "../../store";
 
 import {authSelect, TokenSlice} from "../../slices/authSlice";
-import {getProductDetailSelect,} from "../../slices/productSlice";
-
+import {likedProducts, getProductDetailSelect, getLikedProducts} from "../../slices/productSlice";
 import {getProductDetail, likeBook, unLikeBook} from "../../services/product";
 
 import LoginHeader from "../../components/Header/LoginHeader";
@@ -18,41 +17,32 @@ const Product: NextPage = () => {
     const dispatch = useDispatch<AppDispatch>()
     const accessToken = useSelector(authSelect);
     const product = useSelector(getProductDetailSelect);
-    
-    const [likedProduct, setLikedProduct] = useState<number[]>([]);
+    const likedProductsArr = useSelector(likedProducts);
 
-    useEffect(() => {
-        setLikedProduct(JSON.parse(localStorage.getItem("likes") || "[]"))
-    }, [])
 
     const [imageSrc, setImageSrc] = useState("https://img.icons8.com/ios/36/000000/hearts--v1.png");
 
     useEffect(() => {
-        console.log(window.location.pathname.split('/').reverse()[0])
         dispatch(TokenSlice.actions.checkCookie());
         const id = window.location.pathname.split('/').reverse()[0]
         if (accessToken) {
             dispatch(getProductDetail({accessToken, id}));
         }
-
     }, [accessToken])
 
+    useEffect(()=> {
+        dispatch(getLikedProducts())
+    },[])
 
-    const likeBookEvent = () => {
-        const likedProductIds = JSON.parse(localStorage.getItem("likes") || "[]");
-        if (likedProductIds.includes(product.id)) {
-            dispatch(unLikeBook({accessToken, productId: product.id}));
-            const updatedLikedProductIds = likedProductIds.filter((id: number) => id !== product.id);
-            setLikedProduct(updatedLikedProductIds);
-            localStorage.setItem("likes", JSON.stringify(updatedLikedProductIds));
+
+    const likeBookEvent = async () => {
+        if (likedProductsArr.includes(product.id)) {
+            await dispatch(unLikeBook({accessToken, productId: product.id}));
         } else {
-            dispatch(likeBook({accessToken, productId: product.id}));
-            likedProductIds.push(product.id);
-            setLikedProduct(likedProductIds);
-            localStorage.setItem("likes", JSON.stringify(likedProductIds));
+            await dispatch(likeBook({accessToken, productId: product.id}));
         }
+        localStorage.setItem("likes", JSON.stringify(likedProductsArr));
     }
-
 
     return (
         <>
@@ -66,7 +56,7 @@ const Product: NextPage = () => {
                                 <div className="flex items-center">
                                     <span
                                         className="mr-4 text-lg">{product?.likes ? product?.likes.length + " likes" : " "} </span>
-                                    {!likedProduct.includes(product.id) ?
+                                    {!likedProductsArr.includes(product.id) ?
                                         <img
                                             onMouseOver={() => setImageSrc("https://img.icons8.com/color/36/null/filled-like.png")}
                                             onMouseOut={() => setImageSrc("https://img.icons8.com/ios/36/000000/hearts--v1.png")}

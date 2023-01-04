@@ -48,7 +48,10 @@ export const likeBook = createAsyncThunk("Token/likeBook", async (param: { acces
             body: JSON.stringify({productId: param.productId},),
         },
     );
-    return await response.json();
+    return  {
+        request: await response.json(),
+        id: param.productId
+    };
 });
 
 export const unLikeBook = createAsyncThunk("Token/unLikeBook", async (param: { accessToken: string | null, productId: number }) => {
@@ -64,5 +67,8 @@ export const unLikeBook = createAsyncThunk("Token/unLikeBook", async (param: { a
             body: JSON.stringify({productId: param.productId},),
         },
     );
-    return await response.json()
+    return {
+        request: await response.json(),
+        id: param.productId
+    };
 });

@@ -3,7 +3,6 @@ import {getProducts, getProductDetail, likeBook, unLikeBook} from "../services/p
 
 import {RootState} from "../store";
 
-
 export interface Product {
     id: number;
     name: string;
@@ -28,13 +27,18 @@ const initialState = {
         description: "",
         likes: []
     },
+    likedProducts: []
 };
 
 
-export const PsroductSlice = createSlice({
+export const ProductSlice = createSlice({
     name: "product",
     initialState,
-    reducers: {},
+    reducers: {
+        getLikedProducts:(state) =>{
+            state.likedProducts = JSON.parse(localStorage.getItem("likes") || "[]")
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getProducts.pending, (state) => {
@@ -67,7 +71,11 @@ export const PsroductSlice = createSlice({
                 state.pending = true;
             })
             .addCase(likeBook.fulfilled, (state, {payload}) => {
-                console.log(payload)
+                const id = payload.id
+                let updatedLikedProductIds:number[]
+                updatedLikedProductIds = [...state.likedProducts, id ]
+                state.likedProducts = updatedLikedProductIds
+
                 state.pending = false
                 state.error = false
             })
@@ -80,9 +88,12 @@ export const PsroductSlice = createSlice({
                 state.pending = true;
             })
             .addCase(unLikeBook.fulfilled, (state, {payload}) => {
-                console.log(payload)
-                state.pending = false
-                state.error = false
+                let updatedLikedProductIds = state.likedProducts;
+                updatedLikedProductIds = updatedLikedProductIds.filter((id: number) => id !== payload.id);
+                state.likedProducts = updatedLikedProductIds;
+
+                state.pending = false;
+                state.error = false;
             })
             .addCase(unLikeBook.rejected, (state) => {
                 state.pending = false;
@@ -93,6 +104,8 @@ export const PsroductSlice = createSlice({
 
 export const productsSelect = (state: RootState): Product[] => state.product.products;
 export const getProductDetailSelect = (state: RootState): Product => state.product.product;
+export const likedProducts = (state: RootState): number[]  => state.product.likedProducts;
 
+export const { getLikedProducts } = ProductSlice.actions
 
-export default PsroductSlice.reducer
+export default ProductSlice.reducer
